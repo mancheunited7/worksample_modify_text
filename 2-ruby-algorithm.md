@@ -16,17 +16,17 @@
 
 <a href="https://diveintocode.gyazo.com/2e32e72d36ffbedc3fea5985c2d39175"><img src="https://t.gyazo.com/teams/diveintocode/2e32e72d36ffbedc3fea5985c2d39175.png" alt="https://diveintocode.gyazo.com/2e32e72d36ffbedc3fea5985c2d39175" width="309"/></a>
 
-「5」という数字を検索する場合を想定してみましょう。
+「５」という数字を検索する場合を想定してみましょう。
 
-1. 最初のデータである1を見ます。
+１. 最初のデータである１を見ます。
 
 <a href="https://diveintocode.gyazo.com/03b22ba806d6f25d6af0b71c236048ad"><img src="https://t.gyazo.com/teams/diveintocode/03b22ba806d6f25d6af0b71c236048ad.png" alt="https://diveintocode.gyazo.com/03b22ba806d6f25d6af0b71c236048ad" width="309"/></a>
 
-2. 1ではないので、次のデータ3を見ます。
+２. ５ではないので、次のデータ３を見ます。
 
 <a href="https://diveintocode.gyazo.com/8067e882d32958251f6d7984b162edcd"><img src="https://t.gyazo.com/teams/diveintocode/8067e882d32958251f6d7984b162edcd.png" alt="https://diveintocode.gyazo.com/8067e882d32958251f6d7984b162edcd" width="309"/></a>
 
-3. 3ではないので、次のデータ5を見ます。5を見つけたので処理を終了させます。
+３. ５ではないので、次のデータ５を見ます。５を見つけたので処理を終了させます。
 
 <a href="https://diveintocode.gyazo.com/729db5a89bf7d1f67308d670157b590e"><img src="https://t.gyazo.com/teams/diveintocode/729db5a89bf7d1f67308d670157b590e.png" alt="https://diveintocode.gyazo.com/729db5a89bf7d1f67308d670157b590e" width="309"/></a>
 
@@ -57,35 +57,45 @@
 
 [![https://diveintocode.gyazo.com/3ae90b2e79618a18353b498aad5807e5](https://t.gyazo.com/teams/diveintocode/3ae90b2e79618a18353b498aad5807e5.png)](https://diveintocode.gyazo.com/3ae90b2e79618a18353b498aad5807e5)
 
-「5」という数字を検索する場合を想定してみましょう。
+「５」という数字を検索する場合を想定してみましょう。
 
 まず、最初に配列の中央の値に注目します。
 
-この場合、配列の中央の値は「4」になります。
+この場合、配列の中央の値は「４」になります。
 
 [![https://diveintocode.gyazo.com/9c605638a6f4e70c29cbe17d196ccd51](https://t.gyazo.com/teams/diveintocode/9c605638a6f4e70c29cbe17d196ccd51.png)](https://diveintocode.gyazo.com/9c605638a6f4e70c29cbe17d196ccd51)
 
-中央の値である「4」と今回検索対象としている「5」を比較すると「5」の方が大きいです。
+中央の値である「４」と今回検索対象としている「５」を比較すると「５」の方が大きいです。
 
-このことから「5」は「4」の右側にあることがわかります。
+このことから「５」は「４」の右側にあることがわかります。
 
 [![https://diveintocode.gyazo.com/5bf14c9936e96227523e2a865f7ee122](https://t.gyazo.com/teams/diveintocode/5bf14c9936e96227523e2a865f7ee122.png)](https://diveintocode.gyazo.com/5bf14c9936e96227523e2a865f7ee122)
 
 再び、配列の中央の値に注目します。
 
-この場合、配列の中央の値は「6」になります。
+この場合、配列の中央の値は「６」になります。
 
 [![https://diveintocode.gyazo.com/5fff9011b259acd8c8c24a877b69f6f0](https://t.gyazo.com/teams/diveintocode/5fff9011b259acd8c8c24a877b69f6f0.png)](https://diveintocode.gyazo.com/5fff9011b259acd8c8c24a877b69f6f0)
 
-中央の値である「6」と今回検索対象としている「5」を比較すると「6」の方が大きいです。
+中央の値である「６」と今回検索対象としている「５」を比較すると「６」の方が大きいです。
 
-このことから「5」は「6」の左側にあることがわかります。
+このことから「５」は「６」の左側にあることがわかります。
 
 このように、検索する範囲を半分に絞込みながら検索していくのが「二分探索法」です。
 
+### 二分探索法のメリット
+```
+検索スピードが早い
+```
+
+### 二分探索法のデメリット
+```
+検索データがソートされている必要あり
+```
+
 ### 二分探索法の処理
 
-二分探索法は、大きく分けて以下の3つの処理から構成されています。
+二分探索法は、大きく分けて以下の３つの処理から構成されています。
 ```
 （１）中央の要素を調べる
 （２）中央の要素と、検索対象の要素を比較する
@@ -99,16 +109,16 @@
 [![https://diveintocode.gyazo.com/267607b42f8f8852f924c64bad78764d](https://t.gyazo.com/teams/diveintocode/267607b42f8f8852f924c64bad78764d.png)](https://diveintocode.gyazo.com/267607b42f8f8852f924c64bad78764d)
 
 配列の中央の数字を計算で出す場合は、
-`( 配列の先頭の添字 + 配列の末尾の添字 ) / 2`という計算式で導くことが出来ます。
-今回の場合、`( 0 + 6 ) / 2 = 3`となり、中央の値の添字は[3]となります。
+`( 配列の先頭の添字 + 配列の末尾の添字 ) / ２`という計算式で導くことが出来ます。
+今回の場合、`( 0 + ６ ) / ２ = ３`となり、中央の値の添字は[３]となります。
 
 **配列の要素の数が偶数の場合**
 
 要素の数が5個や7個の場合は2で割り切ることが出来るのですが、
 
-例えば要素の数が6個の場合、配列の中央を求める計算式は、`0+5/2=2.5`となります。
+例えば要素の数が6個の場合、配列の中央を求める計算式は、`0+５/２=２.５`となります。
 
-添字[2.5]という要素は存在しないため、小数を整数化する必要があります。
+添字[２.５]という要素は存在しないため、小数を整数化する必要があります。
 
 小数を整数化する方法としては、「四捨五入」、「切り上げ」、「切り捨て」といった方法が考えられます。
 
