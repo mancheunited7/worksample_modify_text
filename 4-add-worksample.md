@@ -13,9 +13,22 @@
 - アクション(`new`)を実装する。
 - フォームを`form_with`メソッドを使用して実装する。
 
-## 【RESTful】new
+## RESTfulとは
 
-MVCを理解し易いようにRouting、Controller、（Model）、Viewの流れで必要なコードを実装していきます。今回は特にModelは編集しないので、括弧としています。
+RESTfulを直訳すると、「RESTな性質をもつ」といった意味になります。
+
+ここで「REST」とは、Webを構築するときの考え方の一つで、`リソースとなるURLをHTTPメソッドに対応させ、自由にCRUDできるものとして扱う考え方`といえます。
+
+さっそく、RESTfulな観点を意識し、`new`を実装していきましょう。
+
+## 【new】
+
+Newには、次の役割があります。
+
+- 新規画面を表示する
+- 入力された値をcreateに送る
+
+コードの実装は、Routing → Controller → Viewの順で進めます。今回Modelの実装はありません。
 
 ### Routing
 
