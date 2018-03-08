@@ -32,8 +32,9 @@ Newには、次の役割があります。
 
 ### Routing
 
-まずは、ブログ新規作成画面のルーティングを作成することから初めましょう。
-RESTfulな実装であれば、resourcesメソッドを使用して、ルーティングを設定するのが一般的です。
+まずは、ルーティングから作成しましょう。
+
+`new`のルーティングを作成するために、`resources`メソッドを使用します。
 
 `config/routes.rb`
 
@@ -44,13 +45,15 @@ Rails.application.routes.draw do
 end
 ```
 
-`resources`
+#### resourcesメソッド
+
+`resourcesメソッドについて（Railsガイド）`
+
 https://railsguides.jp/routing.html#crud%E3%80%81%E5%8B%95%E8%A9%9E%E3%80%81%E3%82%A2%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3
 
-#### resources
+resourcesメソッドとは、RESTfulなルーティングを自動生成するメソッドです。
 
-resourcesメソッドを使用することで、RESTfulに沿った7つのルーティングが生成されます。
-実際に`rails routes`コマンドをターミナルで実行して、確かめてみましょう。
+`config/routes.rb`に`resources :blogs`を追記したあと、実際に`rails routes`コマンドをターミナルで実行して、確かめてみましょう。次のような結果が表示されます。
 
 ```
 dive_into_code:~/workspace/sample (master) $ rails routes
@@ -65,31 +68,43 @@ edit_blog GET    /blogs/:id/edit(.:format) blogs#edit
           DELETE /blogs/:id(.:format)      blogs#destroy
 ```
 
-このように、index/create/new/edit/show/update/destroyへのroutingが生成されているのが分かります。
-updateへのroutingが2個生成されているのは、後の仕様でpatchが追加されたためです。特に気にする必要はありません。
+index・create・new・edit・show・update・destroy、それぞれのアクションへのルーティングが生成されているのが分かります。
 
-```
-URL	                    アクション名 HTTPメソッド 説明
-/XXXs(.:format)	        index     GET	      一覧画面を生成
-/XXXs/:id(.:format)	    show	    GET	      詳細画面を生成
-/XXXs/new(.:format)	    new	      GET	      登録画面を生成
-/XXXs(.:format)	        create	  POST	    登録処理をする
-/XXXs/:id/edit(.:format)edit	    GET	      編集画面を生成
-/XXXs/:id(.:format)	    update	  PUT	      更新処理を行う
-/XXXs/:id(.:format)	    destroy	  DELETE	  削除処理を行う
-```
+（updateへのroutingが2個生成されているのは、後の仕様でpatchが追加されたためです。特に気にする必要はありません。）
 
-*（参考）*  http://railsdoc.com/references/resources より
+ここで、`rails routes`コマンドで表示された、結果の見方を説明します。
 
-また、prefixとありますが、prefixを利用すると、Viewで利用するlink_to メソッドや、redirect メソッドなどで必要とするパスの指定を簡単に書くことが出来ます。(後のリンク生成で学びます。)
+`Prefix`は、URLを簡略化した名称です。
+Prefixを使用すると、link_toメソッド、renderメソッド、redirectメソッドが必要とするパスを簡単に記述できるというメリットがあります。
 
-これで、ブログのCRUD機能に必要な、ルーティングを実装することができました。
+`Verb`は、リクエストで送信されるHTTPメソッドを示しています
 
-#### ルーティング確認
+`URI Pattern`は、リクエストURLを示しています。
 
-先程のルーティングによって、`GET`メソッドで、`/blogs/new`のURLでリクエストが来た場合、Blogsコントローラーのnewアクションを選択するルーティングを作成することができました。
+`Controller#Action`は、関連付けされたコントローラ名とアクション名を示しています。
+
+例えば、HTTPメソッドが`GET`、URLが`/blogs/new`のリクエストが送られてきた場合、送られてきたリクエストは、Blogsコントローラーのnewアクションへつなぐ準備ができた、という見方ができます。（実際には、Blogsコントローラーのnewアクションはまだ作成されていないので、つながってはいません。あくまで、つなぐ準備ができた段階です。）
 
 [![https://diveintocode.gyazo.com/7831da463339ea7bd5bc5290da60fe51](https://t.gyazo.com/teams/diveintocode/7831da463339ea7bd5bc5290da60fe51.png)](https://diveintocode.gyazo.com/7831da463339ea7bd5bc5290da60fe51)
+
+**resourcesメソッドを使用するメリット**
+
+resourcesメソッドを使用しない場合、URLとアクションを一つ一つ紐付ける必要があります。紐付けるコードを実装するのは手間ですし、実装されたコードも煩雑になります。
+
+`resourcesメソッドを使用しない場合のroutes.rb`
+
+```
+get ‘/blogs’,     to: ‘blogs#index’
+get ‘/blogs/new’, to: ‘blogs#new’
+get ‘/blogs/:id’, to: ‘blogs#show'
+・
+・
+・
+```
+
+resourcesメソッドを使用した場合は、`resources :blogs`の１行を記述するのみでルーティングが作成されますので、簡潔に簡単に実装できるというメリットが、resourcesメソッドにはあります。
+
+これで、ブログの新規画面に必要なルーティングを実装することができました。
 
 ### Controller
 
