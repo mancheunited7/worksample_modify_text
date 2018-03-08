@@ -124,45 +124,34 @@ class BlogsController < ApplicationController
 end
 ```
 
+### View
 
-### Viewの作成
+最後に、Viewを作成します。
 
-続いてViewを編集していきます。まずはviewの作成を行いましょう。
-BlogsControllerのnewアクション（メソッド）が呼ばれた場合、Viewはデフォルトで`blogs/new.html.erb`が呼び出されるので、`blogs/new.html.erb`を作成します。
+BlogsControllerのnewアクションが呼ばれた場合、Viewはデフォルトで`blogs/new.html.erb`を呼び出すことになっています。そのため、`views/blogs`に`new.html.erb`ファイルを作成する必要があります。
 
-フォルダを右クリックし、NewFileから作成しましょう
+### form_withメソッド
 
-### form_with
+`new.html.erb`ファイルが作成できたら、実際にフォームを作成していきます。
+ここで、モデルと関連付けたフォームを作成するには、`form_with`メソッドを使用します。
 
-ファイルを作成できたところで、実際にフォームを作成していきますが、モデルと関連付けたフォームを作成するので、あればform_withメソッドがとても便利です。
-
-例えば、下記のようなform_withメソッドを記述することで、
+`form_with`メソッドは、ヘルパーメソッドの一つで、簡単にフォームを作成できます。
 
 ```
-<%= form_with(model: Blog.new) %>
+Rails 5.1より前のバージョンでは、【form_for】と【form_tag】の2種類のメソッドがありましたが、
+Rails 5.1ではこの2つのメソッドを【form_with】に統合してますので、今後は【form_with】メソッドを使用しましょう。
 ```
 
-以下のようなHTMLを出力することができます。(コードについて詳しく理解する必要はありませんが、HTMLのformタグが生成されていることを確認しましょう)
+`【form_for】と【form_tag】の【form_with】への統合（Railsガイド）`
 
-```html
-<form action="/blogs" accept-charset="UTF-8" data-remote="true" method="post">
-  <input name="utf8" type="hidden" value="✓">
-  <input type="hidden" name="authenticity_token" value="sAc5l6rFDxpzuKpWF73d81UrQrqAmhReoq8xrgOlzz+PgN1U8GKNgsABTWAw3Grj306HdfBoJwx1xkAHMwjdjA==">
-</form>
-```
+https://railsguides.jp/5_1_release_notes.html#form-for%E3%81%A8form-tag%E3%81%AEform-with%E3%81%B8%E3%81%AE%E7%B5%B1%E5%90%88
 
-`form_with`を使用することで、簡単にフォームを作成できるようになります。
 
-#### ビューヘルパー
-
-form_withはビューヘルパーの一種です。
-ビューヘルパーはRailsに用意された、HTMLを生成するメソッドです。
-例えば、form_withは、フォームの作成を簡単にします。
-
-例えば、下記ようなHTMLは、
+例えば、次のフォームを作成しようとすると、
 
 [![https://diveintocode.gyazo.com/29f94c13d79371f31700c02cf95675e5](https://t.gyazo.com/teams/diveintocode/29f94c13d79371f31700c02cf95675e5.png)](https://diveintocode.gyazo.com/29f94c13d79371f31700c02cf95675e5)
 
+本来、次のようなHTMLを作成することになりますが、
 ```html
 <form action="/blogs" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="qbu8RFLhyCuAElg1qr7MLYDEdiEINJdEe1JLQFLr7kyWPFiHCEZKszOrvwON33s9CqGz7njGpBasOzrpYkb8/w==">
   <div class="blog_title">
@@ -177,10 +166,10 @@ form_withはビューヘルパーの一種です。
 </form>
 ```
 
-ビューヘルパーを使用することで下記のように記述できます。
+`form_with`メソッドを使用すると、次のように簡単に記述でき、処理が実行されると上記で作成したHTMLを自動生成してくれます。
 
 ```html
-<%= form_with(model: Blog.new) do |form| %>
+<%= form_with(model: @blog) do |form| %>
   <div class="blog_title">
     <%= form.label :title %>
     <%= form.text_field :title %>
@@ -193,41 +182,32 @@ form_withはビューヘルパーの一種です。
 <% end %>
 ```
 
-簡潔にそして、簡単に記述することができるようになります。
+#### form_withの引数
 
-#### form_with 引数
-
-[少し難しいですが、ドキュメントを見ると分かるように、form_withメソッドにはmodelオプションの引数として、モデルクラスのインスタンスを渡す必要があります。](https://techracho.bpsinc.jp/hachi8833/2017_05_01/39502)
+次のようにmodelオプションを設定し、その引数にモデルのインスタンスを設定します。
 
 ```
-<%= form_with(model: モデルのインスタンス) %>
+<%= form_with(model: @blog) %>
 ```
 
-form_withはモデルのインスタンスを元に、formを送信すると、どのようなリクエストを送るかを決定します。
-つまり、Blogモデルのインスタンスであれば、ブログを作成するようなリクエストを、Userモデルのインスタンスであれば、ユーザーを作成するようなリクエストを作成するということです。（まずはイメージをつかめれば大丈夫です。）
+こうすることで、Railsが、モデルオプションに設定したインスタンスを元に、行き先（どのようなリクエストを送るか）を自動で推測してくれます。
 
-[![https://diveintocode.gyazo.com/c6054cf6b7503342901c91afe5c37da1](https://t.gyazo.com/teams/diveintocode/c6054cf6b7503342901c91afe5c37da1.png)](https://diveintocode.gyazo.com/c6054cf6b7503342901c91afe5c37da1)
+逆にmodelオプションを使用しない場合を考えると、次のように、`行き先URL`と`HTTPメソッド`を個別に指定する必要があります。
 
-### フォームパーツについて
-
-そのフォームに紐づくパーツは以下のようにして生成します。
-
-```html
-<%= form_with(model: Blog.new) do |form| %>
-  <!-- この中にパーツを記述する -->
-<% end %>
+```
+<%= form_with(url: blogs_path, method: post) %>
 ```
 
-この`do ~ end(ブロック)`の中で、用意されたメソッド`form.labelやform.submit`を使用することで、フォームに結びついたパーツ（テキストフィールドやSubmitボタン）を作成することが可能になります。
+modelオプションを使用した方が、簡単でわかりやすいといったメリットがあります。
 
 ### フォーム作成
 
-実際に app/views/blogs/new.html.erbにform_withメソッドを使用して、フォームを作成しましょう。（ファイルがない場合作成しましょう。）
+今までのことを踏まえ、`blogs/new.html.erb`にブログの新規画面フォームを作成してみましょう。
 
 `app/views/blogs/new.html.erb`
 
 ```html
-<%= form_with(model: Blog.new, local: true) do |form| %>
+<%= form_with(model: @blog, local: true) do |form| %>
   <div class="blog_title">
     <%= form.label :title %>
     <%= form.text_field :title %>
@@ -240,19 +220,26 @@ form_withはモデルのインスタンスを元に、formを送信すると、�
 <% end %>
 ```
 
-`<%= form_with(model: Blog.new, local: true) do |form| %>`form_withメソッドには、Blog.new、つまりブログモデルのインスタンスを引数として渡しています。そうすることで、`<form class="new_blog" id="new_blog" action="/blogs" accept-charset="UTF-8" method="post">`のように、POSTメソッドで`/blogs`URLにリクエストを送信するフォームを作成することができます。
+上から順にコードを見ていきましょう。
 
-また、form_withメソッドは、デフォルトではJavaScript用のリクエストが発生してしまうので、` local: true`とすることで、HTML用のリクエストを発行するようにします。(難しいので、この時点で理解できなくても問題ありません。)
+`<%= form_with(model: @blog, local: true) do |form| %>`
 
-最後に、formタグとして出力させるので、form_withメソッドは、`<%=`で囲う必要があります。
+form_withメソッドのオプションには、modelオプションを指定します。
+引数として@blogを指定することで、Railsは自動的に`POST`メソッドで`/blogs`URLにリクエストを送信するフォームを作成します。
 
-`フォームパーツについて`
+また、`form_with`メソッドは、デフォルトでJavaScript用のリクエストが発生してしまうので、` local: true`とすることで、HTML用のリクエストを生成するようにします。(難しいので、この時点で理解できなくても問題ありません。)
 
-`form.label`はHTMLのlabelタグを作成するメソッドです。
+`do ~ end`の中には、ラベルを生成する`form.label`、ボタンを生成する`form.submit`を使用することで、フォームに結びついたパーツを作成することができます。
+
+`form.label`はHTMLのlabelタグを生成するメソッドです。
+
 `form.text_field`は、属性(type)をtextに指定した、HTMLのinputタグを作成するメソッドです。
-`form.submit`は、属性(type)をsubmitに指定した、HTMLのinputタグを作成するメソッドです。valueは、form_withに渡されたモデルクラスによって代わります。[valueを変更する場合、オプションを指定する必要があります。](http://railsdoc.com/references/submit)
+
+`form.submit`は、属性(type)をsubmitに指定した、HTMLのinputタグを作成するメソッドです。value(ボタンに表示する名称)は、form_withに渡されたモデルクラスによって代わります。valueを変更する場合、オプションを指定する必要があります。
 
 それぞれをdivタグで囲んでいるのは、改行するためです。divタグもしくはbrタグで囲わないと横一列になります。
+
+最後に、formタグとしてのHTMLコードを生成するために、`form_with`メソッドを`<%=`で囲みます。`<%=`で囲まないと、HTMLコードは作成されず、フォームが画面に表示されなくなります。
 
 ### サーバーを起動し、確認する
 
