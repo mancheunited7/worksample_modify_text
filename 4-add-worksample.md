@@ -108,7 +108,7 @@ resourcesメソッドを使用した場合は、`resources :blogs`の１行を�
 
 ### Controller
 
-ルーティングを作成することができたので、アクションをまずは定義しましょう。
+ルーティングを作成することができたので、次は、コントラーラに`new`アクションを定義します。
 
 `app/controllers/blogs_controller.rb`
 
@@ -119,6 +119,7 @@ class BlogsController < ApplicationController
 
   # 追記する
   def new
+    @blog = Blog.new
   end
 end
 ```
